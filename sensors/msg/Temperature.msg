@@ -1,3 +1,3 @@
 time stamp
 float32 fahrenheit
-float32 celcius
+float32 celsius
