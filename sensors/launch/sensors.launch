@@ -1,5 +1,10 @@
 <launch>
   <arg name="serial_device" default="/dev/ttyACM0" />
   <param name="serial_device" value="$(arg serial_device)" />
+  <param name="database_ip" value"$(env DATABASE_IP)" />
+  <param name="database_user" value"$(env DATABASE_USER)" />
+  <param name="database_password" value"$(env DATABASE_PASSWORD)" />
+  <param name="database_name" value"$(env DATABASE_NAME)" />
   <node name="sensors_node" pkg="sensors" type="sensor_node.py" output="screen" />
+  <node name="database_node" pkg="sensors" type="database_node.py" output="screen" />
 </launch>
