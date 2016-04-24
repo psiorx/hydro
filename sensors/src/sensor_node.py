@@ -71,7 +71,7 @@ class Sensors:
     
 if __name__ == '__main__':
   rospy.init_node('sensors_node')  
-  sensors = Sensors('/dev/ttyACM0')
+  sensors = Sensors(rospy.get_param('serial_device', '/dev/ttyACM0'))
   try:
     sensors.ReadSerialLines()
   except rospy.ROSInterruptException:

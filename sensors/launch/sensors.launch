@@ -1,0 +1,5 @@
+<launch>
+  <arg name="serial_device" default="/dev/ttyACM0" />
+  <param name="serial_device" value="$(arg serial_device)" />
+  <node name="sensors_node" pkg="sensors" type="sensor_node.py" output="screen" />
+</launch>
