@@ -34,6 +34,12 @@
 //---------------------------------------------------------------------------------------------
 
 #include <Wire.h>                     // enable I2C.
+#include "DHT.h"
+
+#define DHTPIN 2
+#define DHTTYPE DHT22
+DHT dht(DHTPIN, DHTTYPE);
+
 
 char sensordata[30];                  // A 30 byte character array to hold incoming data from the sensors
 byte sensor_bytes_received = 0;       // We need to know how many characters bytes have been received
@@ -57,6 +63,8 @@ char *channel_names[] = {"EC", "TEMP", "PH"}; // <-- CHANGE THIS.
 void setup() {                      // startup function
   Serial.begin(9600);	            // Set the hardware serial port.
   Wire.begin();			    // enable I2C port.
+  dht.begin();
+
 }
 
 
@@ -112,5 +120,14 @@ void loop() {
     }
 
   } // for loop 
+
+  float humidity = dht.readHumidity();
+  float airtemp = dht.readTemperature();
+
+  Serial.print("AIRTEMP:");
+  Serial.println(airtemp);
+  Serial.print("RELHUM:");
+  Serial.println(humidity);
+  
 
 }
