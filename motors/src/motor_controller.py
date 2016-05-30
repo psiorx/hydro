@@ -1,6 +1,5 @@
 #!/usr/bin/python
 import RPi.GPIO as GPIO
-from time import sleep
 
 class MotorController:
   def __init__(self, pin_A, pin_B, pin_Enable):
