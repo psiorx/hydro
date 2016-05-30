@@ -4,6 +4,7 @@ import rospy
 from sensors.msg import Alkalinity
 from sensors.msg import Temperature
 from sensors.msg import Conductivity
+from sensors.msg import Humidity
 
 class Sensors:
   def __init__(self, serial_device):
@@ -12,6 +13,9 @@ class Sensors:
     self.temp_pub = rospy.Publisher('/sensors/temperature', Temperature, queue_size=10)
     self.ph_pub = rospy.Publisher('/sensors/alkalinity', Alkalinity, queue_size=10)
     self.ec_pub = rospy.Publisher('/sensors/conductivity', Conductivity, queue_size=10) 
+    self.hum_pub = rospy.Publisher('/sensors/humidity', Humidity, queue_size=10)
+    self.air_pub = rospy.Publisher('/sensors/air_temperature', Temperature, queue_size=10)
+    
   
   def ReadSerial(self):
     out = ''
@@ -39,9 +43,23 @@ class Sensors:
     temp_msg = Temperature()
     temp_msg.stamp = rospy.Time.now()
     temp_msg.celsius = float(value)
-    temp_msg.fahrenheit = (temp_msg.celsius * 1.8) + 32
     self.temp_pub.publish(temp_msg)
-    rospy.loginfo("Published temp: %f F", temp_msg.fahrenheit)
+    rospy.loginfo("Published temp: %f C", temp_msg.celsius)
+  
+  def HandleAirTemp(self, value):
+    temp_msg = Temperature()
+    temp_msg.stamp = rospy.Time.now()
+    temp_msg.celsius = float(value)
+    self.air_pub.publish(temp_msg)
+    rospy.loginfo("Published air temp: %f C", temp_msg.celsius)
+  
+  def HandleHumidity(self, value):
+    hum_msg = Humidity()
+    hum_msg.stamp = rospy.Time.now()
+    hum_msg.relative_humidity = float(value)
+    self.hum_pub.publish(hum_msg)
+    rospy.loginfo("Published humidity: %f %%", hum_msg.relative_humidity)
+ 
  
   def HandleLine(self, line):
     fields = line.split(':')
@@ -52,6 +70,10 @@ class Sensors:
         self.HandleTemp(fields[1])
       elif fields[0] == 'EC':
         self.HandleEC(fields[1])
+      elif fields[0] == 'RELHUM':
+        self.HandleHumidity(fields[1])
+      elif fields[0] == 'AIRTEMP':
+        self.HandleAirTemp(fields[1])
       else:
         rospy.logwarn("Got unknown message type: %s", fields[0])
   
