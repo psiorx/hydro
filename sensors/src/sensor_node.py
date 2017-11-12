@@ -84,7 +84,11 @@ class Sensors:
     self.ReadSerial()
     while not rospy.is_shutdown(): 
       if self.ser.inWaiting() > 0:
-        self.HandleLine(self.ser.readline().strip())
+        serial_line = self.ser.readline().strip()
+        try:
+          self.HandleLine(serial_line)
+        except:
+          print "error while handling data: " + serial_line
       else:
         rospy.sleep(self.serial_delay)
 
