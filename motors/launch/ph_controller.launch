@@ -1,0 +1,13 @@
+<launch>
+  <arg name="serial_device" default="/dev/ttyACM0" />
+  <param name="serial_device" value="$(arg serial_device)" />
+  <param name="database_ip" value="$(env DATABASE_IP)" />
+  <param name="database_user" value="$(env DATABASE_USER)" />
+  <param name="database_password" value="$(env DATABASE_PASSWORD)" />
+  <param name="database_name" value="$(env DATABASE_NAME)" />
+  <param name="ph_limit_low" value="5.5" />
+  <param name="ph_limit_high" value="6.5" />
+  <param name="buffer_length" value="20" />
+  <param name="cooldown_minutes" value="15" />
+  <node name="ph_controller" pkg="motors" type="ph_controller.py" output="screen" respawn="true" />
+</launch>

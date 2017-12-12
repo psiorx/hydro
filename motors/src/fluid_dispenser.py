@@ -18,6 +18,9 @@ class FluidDispenser:
       controller.RunForwards()
       sleep(dispense_time_seconds)
       controller.Stop()
+      controller.RunBackwards()
+      sleep(10)
+      controller.Stop()
 
       
   
